@@ -115,7 +115,7 @@
 							"            quals = r_data.qualification;",
 							"            qual_length=quals.length;",
 							"            ",
-							"            ver_data = dr_data.entry[1].resource,",
+							"            ver_data = dr_data.entry[0].resource,",
 							"            ver_status = ver_data.status",
 							"",
 							"            ",
