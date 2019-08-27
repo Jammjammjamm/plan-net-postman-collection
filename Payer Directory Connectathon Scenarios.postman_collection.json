@@ -359,7 +359,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Practitioner?practitioner-qualification-wherevalid-code=CT",
+					"raw": "{{url}}/Practitioner?qualification-wherevalid-code=CT",
 					"host": [
 						"{{url}}"
 					],
