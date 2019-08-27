@@ -1,0 +1,1325 @@
+{
+	"info": {
+		"_postman_id": "5c8ccae3-b632-43dd-bd18-633b4ad79ab0",
+		"name": "Payer Directory Connectathon Scenarios",
+		"description": "Sample data load to wildFHIR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Scenario 1: get the practitioner’s qualifications.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c07e7aa2-869b-41ae-9c14-4bad7f1a8574",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody),",
+							"            r_data = dr_data.entry[0].resource,",
+							"            pract = r_data.name[0].text;",
+							"            quals = r_data.qualification;",
+							"            qual_length=quals.length;",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"        }",
+							"",
+							"        tests[\"Practitioner=\"  +  pract ] = true;",
+							"        for (var i = 0; i < qual_length; i++) {",
+							"            tests[ \"Qualifications:\"  + quals[i].code.coding[0].display + \" in \" + quals[i].extension[0].extension[1].valueCodeableConcept.text] = true;",
+							"            //qual_text = qual_text + \"quals[i].code.coding[0].display\"  + \"\\n\";",
+							"            //Do something",
+							"        }",
+							"    ",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Practitioner?identifier=1236246543",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Practitioner"
+					],
+					"query": [
+						{
+							"key": "identifier",
+							"value": "1236246543"
+						}
+					]
+				},
+				"description": "Scenario 1: Local Data Validation - A Local Workflow Environment needs to verify details on a prior known individual as part of a local use case. \n\nThis scenario tests the ability to send a fully qualified query to the Healthcare Directory to receive data that describes an individual provider. Local Requester will use predetermined NPI numbers to get the practitioner, the practitioners qualifications and any Validation profiles.\n\nUsing a Practitioner’s NPI number 9998367938 get the practitioner’s qualifications.\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 1: Verify the Practitioner has a current",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "68fc5667-9d67-4b99-bc1b-dfdcd02cffcf",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody),",
+							"            r_data = dr_data.entry[0].resource,",
+							"            pract = r_data.name[0].text;",
+							"            quals = r_data.qualification;",
+							"            qual_length=quals.length;",
+							"            ",
+							"            ver_data = dr_data.entry[1].resource,",
+							"            ver_status = ver_data.status",
+							"",
+							"            ",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"        }",
+							"",
+							"        tests[\"Practitioner=\"  +  pract ] = true;",
+							"        for (var i = 0; i < qual_length; i++) {",
+							"            tests[ \"Qualifications:\"  + quals[i].code.coding[0].display + \" in \" + quals[i].extension[0].extension[1].valueCodeableConcept.text] = true;",
+							"            //qual_text = qual_text + \"quals[i].code.coding[0].display\"  + \"\\n\";",
+							"            //Do something",
+							"        }",
+							"        tests[\"Verification Status =\"  +  ver_status ] = true;",
+							"",
+							"    ",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Practitioner?identifier=1236246543&_revinclude=VerificationResult:target",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Practitioner"
+					],
+					"query": [
+						{
+							"key": "identifier",
+							"value": "1236246543"
+						},
+						{
+							"key": "_revinclude",
+							"value": "VerificationResult:target",
+							"description": "Verify the Practitioner has a current, validated license in the state of CT (Connecticut). Note this can be done via a rev-include (or first getting the practitioner, then finding the verification result)."
+						}
+					]
+				},
+				"description": "Scenario 1: Local Data Validation - A Local Workflow Environment needs to verify details on a prior known individual as part of a local use case. \n\nThis scenario tests the ability to send a fully qualified query to the Healthcare Directory to receive data that describes an individual provider. Local Requester will use predetermined NPI numbers to get the practitioner, the practitioners qualifications and any Validation profiles.  \n \nVerify the Practitioner has a current, validated license in the state of CT (Connecticut). Note this can be done via a rev-include (or first getting the practitioner, then finding the verification result).\n\n\nStretch goal - programmatically determine the status of the qualification  - todo"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 2: Request all practitioners with any practitioner.address that is in the state of CT (Connecticut).",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9efae177-a382-478b-ac42-888436fecc33",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            ",
+							"            tests[dr_data.total + \" Practitioners in CT\"] = true;",
+							"            var p_name = \"including:\";",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"            var p_name  = p_name +  \", \" + data_entry[i].resource.name[0].text;",
+							"            //var p_sname  = data_entry[i].resource.name[0];",
+							"            }",
+							"            tests[p_name] = true;",
+							"            ",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Practitioner?address-state=CT",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Practitioner"
+					],
+					"query": [
+						{
+							"key": "address-state",
+							"value": "CT"
+						}
+					]
+				},
+				"description": "Scenario 2: Request data on a set of practitioners  - A Local Workflow Environment needs the data on a set of practitioners as defined by jurisdictional boundaries, in this case a state.  This might be an initial fetching of information, a bulk update/verification or similar local use case where obtaining information on a state is required.\n\nThis scenario tests the ability to send a qualified query to the Validated Healthcare Directory and receive data on a set of providers. (This example will be obtaining data with addresses in a particular state jurisdiction.) \n\nProfiles Utilized: Practitioner, PractitionerRole, Location"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 2: any practitioners who have a qualification in CT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "33643ec1-9ba1-4659-ba40-ea1e58686fe5",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            ",
+							"            tests[dr_data.total + \" Practitioners qualified in CT\"] = true;",
+							"            var p_name = \"including:\";",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                ",
+							"                var p_name  = p_name +  \", \" + data_entry[i].resource.name[0].text;",
+							"                quals = data_entry[i].resource.qualification;",
+							"                qual_length=quals.length;",
+							"            ",
+							"                var qual_string = \"...qualification states : \";",
+							"                ",
+							"                    for (var j = 0; j < qual_length; j++) {",
+							"                    qual_string = qual_string + \"/\" + quals[j].extension[0].extension[1].valueCodeableConcept.text ;",
+							"                    }",
+							"              p_name = p_name + qual_string;  ",
+							"            }",
+							"            tests[p_name + \"   \"] = true;",
+							"            ",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Practitioner?practitioner-qualification-wherevalid-code=CT",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Practitioner"
+					],
+					"query": [
+						{
+							"key": "practitioner-qualification-wherevalid-code",
+							"value": "CT",
+							"description": "Or any practitioners who have a qualification (e.g. license) where the qualification is valid is in the state of CT (Connecticut)."
+						}
+					]
+				},
+				"description": "Scenario 2: Request data on a set of practitioners  - A Local Workflow Environment needs the data on a set of practitioners as defined by jurisdictional boundaries, in this case a state.  This might be an initial fetching of information, a bulk update/verification or similar local use case where obtaining information on a state is required. \n\nThis scenario tests the ability to send a qualified query to the Validated Healthcare Directory and receive data on a set of providers. (This example will be obtaining data with addresses in a particular state jurisdiction.) \n \nany practitioners who have a qualification (e.g. license) where the qualification is valid is in the state of CT (Connecticut).\n\n**NOTE**: not yet supported on Brian's server"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 3: query the locations and services for GREATER LAWRENCE FAMILY HEALTH CENTER, INC.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c695a13a-f6e0-4417-9420-4035118047b3",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            var hcs = [];",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                if (data_entry[i].resource.resourceType == \"Organization\"){",
+							"                   var o_name  = \"Organization: \" + data_entry[i].resource.name; ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"Location\"){",
+							"                    var l_name  = \"Location: \" + data_entry[i].resource.description; ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"HealthcareService\"){",
+							"                    hcs.push(data_entry[i].resource.name);",
+							"                }",
+							"                }",
+							"               ",
+							"            tests[\"Organization:\" + o_name] = true;",
+							"            tests[\"Location:\" + l_name] = true;",
+							"            tests[\"HealthcareServices:\" + hcs.toString()] = true;",
+							"",
+							"            ",
+							"            ",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Organization?name=GREATER LAWRENCE FAMILY HEALTH CENTER, INC.&_revinclude=Location:organization&_revinclude=HealthcareService:organization",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Organization"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "GREATER LAWRENCE FAMILY HEALTH CENTER, INC."
+						},
+						{
+							"key": "_revinclude",
+							"value": "Location:organization"
+						},
+						{
+							"key": "_revinclude",
+							"value": "HealthcareService:organization"
+						}
+					]
+				},
+				"description": "Scenario 3: Request data on an individual  organization - A Local Workflow Environment needs current data on an individual organization including all locations, and services. \n\nThis scenario tests the ability of a Local Requester to query the Healthcare Directory and receive organizational information including locations and services provided by the organization.  Local Requester will use a specific organization to receive the locations of the organization and specialty areas by location.\n\nUsing the organization GREATER LAWRENCE FAMILY HEALTH CENTER, INC., query the locations and services for that organization. \n\nThe requester will be querying on a specific organization to determine details which identify location and services of that organization."
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 4a: Query for related organizations for BAY STATE COMMUNITY SERVICES, INC",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0f639ca-80a4-489a-b085-d952c32c54c1",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            var hcs = [];",
+							"            var oa = [];",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                if (data_entry[i].resource.resourceType == \"Organization\"){",
+							"                   var o_name  = \"Organization: \" + data_entry[i].resource.name; ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"Location\"){",
+							"                    var l_name  = \"Location: \" + data_entry[i].resource.description; ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"HealthcareService\"){",
+							"                    hcs.push(\"HealthcareService: \" + data_entry[i].resource.name);",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"OrganizationAffiliation\"){",
+							"                    oa.push(data_entry[i].resource.organization.reference.slice(13));",
+							"                }",
+							"                }",
+							"               ",
+							"            tests[\"Organization:\" + o_name] = true;",
+							"            ///tests[\"Location:\" + l_name] = true;",
+							"            //tests[\"HealthcareServices:\" + hcs.toString()] = true;",
+							"            tests[\"OrganizationAffiliations:\" + oa.toString()] = true;",
+							"            ",
+							"            //set variables for the next query",
+							"            ",
+							"            pm.environment.set(\"org_affiliations\",oa.toString());",
+							"            ",
+							"",
+							"            ",
+							"            ",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+xml",
+						"description": "FHIR xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json",
+						"description": "FHIR json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Organization?name=BAY STATE COMMUNITY SERVICES, INC.&_revinclude=OrganizationAffiliation:participating-organization",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Organization"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "BAY STATE COMMUNITY SERVICES, INC."
+						},
+						{
+							"key": "_revinclude",
+							"value": "OrganizationAffiliation:participating-organization",
+							"description": "The organization that provides services to the primary organization"
+						},
+						{
+							"key": "",
+							"value": "",
+							"description": "Organization where the role is available",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Scenario 4: Request Data on Organizations - A Local Workflow Environment needs current data on an individual organization’s affiliations; including all locations and the services delivered at those locations. \n\nThis scenario tests the ability of a Local Requester to query the Healthcare Directory and receive organizational information including affiliations with other organizations.   Local Requester will use a specific organization to receive the locations of the organization and specialty areas by location.\n\nUsing the organization BAY STATE COMMUNITY SERVICES, INC. query the Healthcare Directory to receive related organizations and HealthcareServices provided for each organization.\n\nThis scenario will get the Direct email addresses of any entity returned.\n\n**NOTE**:  this is part 1 of a 3 part query"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 4b: Query for related organizations for BAY STATE COMMUNITY SERVICES, INC",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0f639ca-80a4-489a-b085-d952c32c54c1",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            var orgs = [];",
+							"            var hcs = [];",
+							"            var oa = [];",
+							"            var org_id = [];",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                if (data_entry[i].resource.resourceType == \"Organization\"){",
+							"                   orgs.push (\"Organization: \" + data_entry[i].resource.name + \"/\" +  data_entry[i].resource.endpoint[0].display +  \" = \" +  data_entry[i].resource.endpoint[0].reference ); ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"Location\"){",
+							"                    var l_name  = \"Location: \" + data_entry[i].resource.description; ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"HealthcareService\"){",
+							"                    hcs.push(\"HealthcareService: \" + data_entry[i].resource.name);",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"OrganizationAffiliation\"){",
+							"                    oa.push(data_entry[i].resource.organization.display + \": \" + data_entry[i].resource.participatingOrganization.display);",
+							"                    org_id.push(data_entry[i].resource.id)",
+							"                }",
+							"                }",
+							"               ",
+							"            tests[dr_data.total + \" Organizations:\" + orgs.toString()] = true;",
+							"            ///tests[\"Location:\" + l_name] = true;",
+							"            //tests[\"HealthcareServices:\" + hcs.toString()] = true;",
+							"            //tests[ dr_data.total + \" OrganizationAffiliations:\" + oa.toString()] = true;",
+							"            //tests[ dr_data.total + \" OrganizationAffiliation ids:\" + org_id.toString()] = true;",
+							"",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"description": "FHIR xml",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR xml",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR json",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+json"
+					},
+					{
+						"description": "FHIR json",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Organization?_id={{assoc_orgs}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Organization"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{assoc_orgs}}"
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Scenario 4: Request Data on Organizations - A Local Workflow Environment needs current data on an individual organization’s affiliations; including all locations and the services delivered at those locations. \n\nThis scenario tests the ability of a Local Requester to query the Healthcare Directory and receive organizational information including affiliations with other organizations.   Local Requester will use a specific organization to receive the locations of the organization and specialty areas by location.\n\nUsing the organization BAY STATE COMMUNITY SERVICES, INC. query the Healthcare Directory to receive related organizations and HealthcareServices provided for each organization.\n\nThis scenario will get the Direct email addresses of any entity returned.\n\n**NOTE**:  this is part 2 of a 2 part query"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 5a: Request Organization data for a specific Provider -",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0f639ca-80a4-489a-b085-d952c32c54c1",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            var orgs = [];",
+							"            var org_id = [];",
+							"            var hcs = [];",
+							"            var oa = [];",
+							"            var pr = [];",
+							"            var org_id = [];",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                if (data_entry[i].resource.resourceType == \"Practitioner\"){",
+							"                    var p_name  = data_entry[i].resource.name[0].text;",
+							"                }",
+							"",
+							"                if (data_entry[i].resource.resourceType == \"PractitionerRole\"){",
+							"                   pr.push(data_entry[i].resource.code[0].text ); ",
+							"                   org_id.push(data_entry[i].resource.organization.reference.slice(13,));",
+							"                   //        org_id.push(data_entry[i].resource.participatingOrganization.reference.slice(13,));// slice off ",
+							"                }",
+							"",
+							"                if (data_entry[i].resource.resourceType == \"Organization\"){",
+							"                   orgs.push (\"Organization: \" + data_entry[i].resource.name + \"/\" +  data_entry[i].resource.endpoint[0].display +  \" = \" +  data_entry[i].resource.endpoint[0].reference ); ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"Location\"){",
+							"                    var l_name  = \"Location: \" + data_entry[i].resource.description; ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"HealthcareService\"){",
+							"                    hcs.push(\"HealthcareService: \" + data_entry[i].resource.name);",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"OrganizationAffiliation\"){",
+							"                    oa.push(data_entry[i].resource.organization.display + \": \" + data_entry[i].resource.participatingOrganization.display);",
+							"                    org_id.push(data_entry[i].resource.id)",
+							"                }",
+							"                }",
+							"               ",
+							"            tests[\"Practitioner:\" + p_name] = true;",
+							"            tests[\"PractitionerRole:\" + pr.toString()] = true;",
+							"            //tests[\"Organization:\" + orgs.toString()] = true;",
+							"            ///tests[\"Location:\" + l_name] = true;",
+							"            //tests[\"HealthcareServices:\" + hcs.toString()] = true;",
+							"            //tests[ dr_data.total + \" OrganizationAffiliations:\" + oa.toString()] = true;",
+							"            tests[ org_id.length.toString() + \" OrganizationAffiliation ids:\" + org_id.toString()] = true;",
+							"",
+							"            pm.environment.set(\"pract_assoc_orgs\", org_id.toString());      ",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"description": "FHIR xml",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR xml",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR json",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+json"
+					},
+					{
+						"description": "FHIR json",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Practitioner?identifier=1234024518&_revinclude=PractitionerRole:practitioner",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Practitioner"
+					],
+					"query": [
+						{
+							"key": "identifier",
+							"value": "1234024518"
+						},
+						{
+							"key": "_revinclude",
+							"value": "PractitionerRole:practitioner",
+							"description": "Practitioner that is able to provide the defined services for the organization"
+						}
+					]
+				},
+				"description": "Scenario 5: Request Organization data for a specific Provider - A Local Workflow environment needs updated information for a specific provider and all organizations the provider is affiliated with.\n\nThis scenario tests the ability for a Local Requester to query by a given provider to find all associated organizations, locations, networks and practice specialty, including a Direct address if available. \n\nGiven the NPI 9994024518, query for the associated provider, the organizations he/she is affiliated with, all locations and services and the networks he subscribes to. \nDetermine the existence of a Direct \n\n**NOTE** Part 1 of 2 part query"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 5b: Query for related organizations for BAY STATE COMMUNITY SERVICES, INC",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0f639ca-80a4-489a-b085-d952c32c54c1",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            var hcs = [];",
+							"            var org = [];",
+							"            var org_id = [];",
+							"            var loc = [];",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                if (data_entry[i].resource.resourceType == \"Organization\"){",
+							"                   org.push(data_entry[i].resource.name + \"/\" +  data_entry[i].resource.endpoint[0].display +  \" = \" +  data_entry[i].resource.endpoint[0].reference );",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"Location\"){",
+							"                    loc.push(data_entry[i].resource.description); ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"HealthcareService\"){",
+							"                    hcs.push(\"HealthcareService: \" + data_entry[i].resource.name);",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"OrganizationAffiliation\"){",
+							"                    oa.push(data_entry[i].resource.organization.display + \": \" + data_entry[i].resource.participatingOrganization.display);",
+							"                    org_id.push(data_entry[i].resource.id)",
+							"                }",
+							"                }",
+							"               ",
+							"            //tests[\"Organization:\" + o_name] = true;",
+							"            ///tests[\"Location:\" + l_name] = true;",
+							"            //tests[\"HealthcareServices:\" + hcs.toString()] = true;",
+							"            tests[ dr_data.total + \" Organizations:\" + org.toString()] = true;",
+							"            tests[ \"Locations:\" + loc.toString()] = true;",
+							"            tests[\"HealthcareServices:  \" + hcs.toString()] = true;",
+							"",
+							"          ",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"description": "FHIR xml",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR xml",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR json",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+json"
+					},
+					{
+						"description": "FHIR json",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Organization?_id={{pract_assoc_orgs}}&_revinclude=Location:organization&_revinclude=HealthcareService:organization",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Organization"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{pract_assoc_orgs}}"
+						},
+						{
+							"key": "_revinclude",
+							"value": "Location:organization"
+						},
+						{
+							"key": "_revinclude",
+							"value": "HealthcareService:organization"
+						}
+					]
+				},
+				"description": "Scenario 4: Request Data on Organizations - A Local Workflow Environment needs current data on an individual organization’s affiliations; including all locations and the services delivered at those locations. \n\nThis scenario tests the ability of a Local Requester to query the Healthcare Directory and receive organizational information including affiliations with other organizations.   Local Requester will use a specific organization to receive the locations of the organization and specialty areas by location.\n\nUsing the organization BAY STATE COMMUNITY SERVICES, INC. query the Healthcare Directory to receive related organizations and HealthcareServices provided for each organization.\n\nThis scenario will get the Direct email addresses of any entity returned.\n\n**NOTE**:  this is part 2 of a 2 part query"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 6a: Identify Organization and Practitioner data associated with a Network",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0f639ca-80a4-489a-b085-d952c32c54c1",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            var hcs = [];",
+							"            var oa = [];",
+							"            var pract = [];",
+							"            var pract_id = [];",
+							"            var org = [];",
+							"            var org_id = [];",
+							"",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                if (data_entry[i].resource.resourceType == \"Organization\"){",
+							"                   var o_name  = \"Organization: \" + data_entry[i].resource.name; ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"Location\"){",
+							"                    var l_name  = \"Location: \" + data_entry[i].resource.description; ",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"HealthcareService\"){",
+							"                    hcs.push(\"HealthcareService: \" + data_entry[i].resource.name);",
+							"                }",
+							"                else if (data_entry[i].resource.resourceType == \"OrganizationAffiliation\"){",
+							"                    org.push(data_entry[i].resource.participatingOrganization.display);",
+							"                    org_id.push(data_entry[i].resource.participatingOrganization.reference.slice(13,));",
+							"                }",
+							"                if (data_entry[i].resource.resourceType == \"PractitionerRole\"){",
+							"                    pract.push(data_entry[i].resource.practitioner.display)",
+							"                    pract_id.push(data_entry[i].resource.practitioner.reference);// slice off Type",
+							"",
+							"                }",
+							"",
+							"                }",
+							"               ",
+							"            tests[\"Organization:\" + o_name] = true;",
+							"            ///tests[\"Location:\" + l_name] = true;",
+							"            //tests[\"HealthcareServices:\" + hcs.toString()] = true;",
+							"            tests[org.length + \" Provider Organization Network Member ids:\" + org.toString()] = true;",
+							"            tests[org_id.length + \" Provider Organization Network Member ids:\" + org_id.toString()] = true;",
+							"            tests[ pract.length + \" Practioner:\" + pract.toString()] = true;",
+							"            tests[\"Individual Provider Network Member ids:\" + pract_id.toString()] = true;",
+							"            ",
+							"            ",
+							"            //set variables for the next query",
+							"            ",
+							"            pm.environment.set(\"network_org_members\",org_id.toString());",
+							"            pm.environment.set(\"network_pract_members\",pract_id.slice(0,25).toString());",
+							"",
+							"        }",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"description": "FHIR xml",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR xml",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR json",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+json"
+					},
+					{
+						"description": "FHIR json",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Organization?name=MA Bronze Plan PPO&_revinclude=OrganizationAffiliation:primary-organization&_revinclude=PractitionerRole:organization",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Organization"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "MA Bronze Plan PPO"
+						},
+						{
+							"key": "_revinclude",
+							"value": "OrganizationAffiliation:primary-organization",
+							"description": "The organization that provides services to the primary organization"
+						},
+						{
+							"key": "_revinclude",
+							"value": "PractitionerRole:organization",
+							"description": "Organization where the role is available"
+						}
+					]
+				},
+				"description": "Scenario 6: Identify data associated with a Network - A Local Workflow needs available data from a Healthcare Directory concerning a Network, including all services, locations, practitioners, and organizations. \n\nUsing the Network MA Bronze Plan PPO, locate all services, locations, providers and organizations who belong to the network.\nStretch goals: the following networks are on the server:\nMA Bronze Plan PPO\nMA Bronze HSA HMO\nMA Silver 70 PPO\nCT Bronze Plan PPO\nCT Bronze HSA HMO\nCT Silver 70 PPO\nRI Bronze Plan PPO\nRI Bronze HSA HMO\nRI Silver 70 PPO\nFeel free to build a simple network Directories based on the data on the server\n\n**NOTE**:  **NOTE**:  this is part 1 of a 3 part query"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 6b: Identify location and healthcare services data associated with an Organizational Provider Network Member",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0f639ca-80a4-489a-b085-d952c32c54c1",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            var hcs = [];",
+							"            var oa = [];",
+							"            org = [];",
+							"            var org_id = [];",
+							"            pr = [];",
+							"            pract_id = [];",
+							"",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                if (data_entry[i].resource.resourceType == \"Organization\"){",
+							"                    var o_name  = data_entry[i].resource.name;",
+							"                    var org_id = data_entry[i].resource.id;",
+							"                    for (j = 0; j < data_entry_len; j++){",
+							"                           if (data_entry[j].resource.resourceType == \"Location\" && data_entry[j].resource.managingOrganization.reference == \"Organization/\" + org_id){",
+							"                            var l_name  = data_entry[j].resource.description; ",
+							"                             }  else if (data_entry[j].resource.resourceType == \"HealthcareService\" && data_entry[j].resource.providedBy.reference == \"Organization/\" + org_id) {",
+							"                             hcs.push(data_entry[j].resource.name); ",
+							"                            }     ",
+							"                    }",
+							"                    tests[i+1 + \") Organization:\" + o_name  + \"  /  Location:\" + l_name + \"  /  HealthcareServices:\" + hcs.toString()] = true;",
+							"                    hcs = [];",
+							"",
+							"                }",
+							"",
+							"        }",
+							"",
+							"        }",
+							"        ",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"description": "FHIR xml",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR xml",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR json",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+json"
+					},
+					{
+						"description": "FHIR json",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/Organization?_id={{network_org_members}}&_revinclude=Location:organization&_revinclude=HealthcareService:organization",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Organization"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "{{network_org_members}}",
+							"description": "primaries from query 6a"
+						},
+						{
+							"key": "_revinclude",
+							"value": "Location:organization"
+						},
+						{
+							"key": "_revinclude",
+							"value": "HealthcareService:organization"
+						}
+					]
+				},
+				"description": "Scenario 6: Identify data associated with a Network - A Local Workflow needs available data from a Healthcare Directory concerning a Network, including all services, locations, practitioners, and organizations. \n\nUsing the Network MA Bronze Plan PPO, locate all services, locations, providers and organizations who belong to the network.\nStretch goals: the following networks are on the server:\nMA Bronze Plan PPO\nMA Bronze HSA HMO\nMA Silver 70 PPO\nCT Bronze Plan PPO\nCT Bronze HSA HMO\nCT Silver 70 PPO\nRI Bronze Plan PPO\nRI Bronze HSA HMO\nRI Silver 70 PPO\nFeel free to build a simple network Directories based on the data on the server\n\n**NOTE** **NOTE**:  this is part 2 of a 3 part query"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 6c: Identify healthcare services data associated with Network Individual Provider Members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0f639ca-80a4-489a-b085-d952c32c54c1",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// print out the step count to the console",
+							"if (responseCode.code === 200){",
+							"    ",
+							"        try{",
+							"            var dr_data = JSON.parse(responseBody);",
+							"            var data_entry = dr_data.entry;",
+							"            var data_entry_len = data_entry.length;",
+							"            var hcs = [];",
+							"            var loc = [];",
+							"",
+							"",
+							"            for (i = 0; i < data_entry_len; i++){",
+							"                ",
+							"                    var p_name  = data_entry[i].resource.practitioner.display;",
+							"                    ",
+							"                    var locs = (data_entry[i].resource.location) ? data_entry[i].resource.location.length : 0 ;",
+							"                    for (j = 0; j < locs; j++){",
+							"                    loc.push(data_entry[i].resource.location[j].display);",
+							"                    }",
+							"                    ",
+							"                    var hcss = (data_entry[i].resource.healthcareService) ? data_entry[i].resource.healthcareService.length : 0 ;",
+							"                    for (j = 0; j < hcss; j++){",
+							"                    hcs.push(data_entry[i].resource.healthcareService[j].display);",
+							"                    }",
+							"                    if (loc.length != 0){",
+							"                    tests[i+1 + \") Practitioner:\" + p_name  + \"  /Location:\" + loc.toString() + \"  /  HealthcareServices:\" + hcs.toString()] = true;",
+							"                    }",
+							"                    loc = [];",
+							"                    hcs = [];",
+							"",
+							"            }",
+							"            ",
+							"        }",
+							"        ",
+							"        catch(e){",
+							"            console.log(e);",
+							"            }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"description": "FHIR xml",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR xml",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+xml",
+						"disabled": true
+					},
+					{
+						"description": "FHIR json",
+						"key": "Accept",
+						"type": "text",
+						"value": "application/fhir+json"
+					},
+					{
+						"description": "FHIR json",
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/PractitionerRole?practitioner={{network_pract_members}}&location:missing=false",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"PractitionerRole"
+					],
+					"query": [
+						{
+							"key": "practitioner",
+							"value": "{{network_pract_members}}",
+							"description": "limited list of practitioners from 6a"
+						},
+						{
+							"key": "location:missing",
+							"value": "false",
+							"description": "filters out network member practitionerroles."
+						}
+					]
+				},
+				"description": "Scenario 6: Identify data associated with a Network - A Local Workflow needs available data from a Healthcare Directory concerning a Network, including all services, locations, practitioners, and organizations. \n\nUsing the Network MA Bronze Plan PPO, locate all services, locations, providers and organizations who belong to the network.\nStretch goals: the following networks are on the server:\nMA Bronze Plan PPO\nMA Bronze HSA HMO\nMA Silver 70 PPO\nCT Bronze Plan PPO\nCT Bronze HSA HMO\nCT Silver 70 PPO\nRI Bronze Plan PPO\nRI Bronze HSA HMO\nRI Silver 70 PPO\nFeel free to build a simple network Directories based on the data on the server\n\n**NOTE**:  this is part 3 of a 3 part query  limited to 25 practitiioners due to url size limits"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "19f541d5-4a7e-45dd-8d15-f02923494590",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f8fd9fed-ad77-45d9-82d3-c7b319754b6f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "6e02a1f2-809d-45f2-bf5d-3aa8c3287f8a",
+			"key": "url",
+			"value": "https://davinci-plan-net-ri.logicahealth.org/fhir",
+			"type": "string"
+		}
+	]
+}
