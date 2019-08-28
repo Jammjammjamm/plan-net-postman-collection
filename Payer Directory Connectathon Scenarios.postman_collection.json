@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5c8ccae3-b632-43dd-bd18-633b4ad79ab0",
+		"_postman_id": "2d820997-5334-47cd-82de-b10aa9b43b01",
 		"name": "Payer Directory Connectathon Scenarios",
 		"description": "Sample data load to wildFHIR",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -96,107 +96,6 @@
 			"response": []
 		},
 		{
-			"name": "Scenario 1: Verify the Practitioner has a current",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "68fc5667-9d67-4b99-bc1b-dfdcd02cffcf",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"",
-							"// print out the step count to the console",
-							"if (responseCode.code === 200){",
-							"    ",
-							"        try{",
-							"            var dr_data = JSON.parse(responseBody),",
-							"            r_data = dr_data.entry[0].resource,",
-							"            pract = r_data.name[0].text;",
-							"            quals = r_data.qualification;",
-							"            qual_length=quals.length;",
-							"            ",
-							"            ver_data = dr_data.entry[0].resource,",
-							"            ver_status = ver_data.status",
-							"",
-							"            ",
-							"",
-							"        }",
-							"        catch(e){",
-							"            console.log(e);",
-							"        }",
-							"",
-							"        tests[\"Practitioner=\"  +  pract ] = true;",
-							"        for (var i = 0; i < qual_length; i++) {",
-							"            tests[ \"Qualifications:\"  + quals[i].code.coding[0].display + \" in \" + quals[i].extension[0].extension[1].valueCodeableConcept.text] = true;",
-							"            //qual_text = qual_text + \"quals[i].code.coding[0].display\"  + \"\\n\";",
-							"            //Do something",
-							"        }",
-							"        tests[\"Verification Status =\"  +  ver_status ] = true;",
-							"",
-							"    ",
-							"}",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/fhir+xml",
-						"description": "FHIR xml",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/fhir+xml",
-						"description": "FHIR xml",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "Accept",
-						"value": "application/fhir+json",
-						"description": "FHIR json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/fhir+json",
-						"description": "FHIR json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/Practitioner?identifier=1236246543&_revinclude=VerificationResult:target",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"Practitioner"
-					],
-					"query": [
-						{
-							"key": "identifier",
-							"value": "1236246543"
-						},
-						{
-							"key": "_revinclude",
-							"value": "VerificationResult:target",
-							"description": "Verify the Practitioner has a current, validated license in the state of CT (Connecticut). Note this can be done via a rev-include (or first getting the practitioner, then finding the verification result)."
-						}
-					]
-				},
-				"description": "Scenario 1: Local Data Validation - A Local Workflow Environment needs to verify details on a prior known individual as part of a local use case. \n\nThis scenario tests the ability to send a fully qualified query to the Healthcare Directory to receive data that describes an individual provider. Local Requester will use predetermined NPI numbers to get the practitioner, the practitioners qualifications and any Validation profiles.  \n \nVerify the Practitioner has a current, validated license in the state of CT (Connecticut). Note this can be done via a rev-include (or first getting the practitioner, then finding the verification result).\n\n\nStretch goal - programmatically determine the status of the qualification  - todo"
-			},
-			"response": []
-		},
-		{
 			"name": "Scenario 2: Request all practitioners with any practitioner.address that is in the state of CT (Connecticut).",
 			"event": [
 				{
@@ -264,7 +163,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Practitioner?address-state=CT",
+					"raw": "{{url}}/Practitioner?address-state=RI",
 					"host": [
 						"{{url}}"
 					],
@@ -274,7 +173,7 @@
 					"query": [
 						{
 							"key": "address-state",
-							"value": "CT"
+							"value": "RI"
 						}
 					]
 				},
@@ -359,7 +258,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Practitioner?qualification-wherevalid-code=CT",
+					"raw": "{{url}}/Practitioner?practitioner-qualification-wherevalid-code=CT",
 					"host": [
 						"{{url}}"
 					],
