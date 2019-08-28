@@ -606,7 +606,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Practitioner?identifier=1234024518&_revinclude=PractitionerRole:practitioner",
+					"raw": "{{url}}/Practitioner?identifier=1230782571&_revinclude=PractitionerRole:practitioner&_include=PractitionerRole:organization",
 					"host": [
 						"{{url}}"
 					],
@@ -616,12 +616,16 @@
 					"query": [
 						{
 							"key": "identifier",
-							"value": "1234024518"
+							"value": "1230782571"
 						},
 						{
 							"key": "_revinclude",
 							"value": "PractitionerRole:practitioner",
 							"description": "Practitioner that is able to provide the defined services for the organization"
+						},
+						{
+							"key": "_include",
+							"value": "PractitionerRole:organization"
 						}
 					]
 				},
