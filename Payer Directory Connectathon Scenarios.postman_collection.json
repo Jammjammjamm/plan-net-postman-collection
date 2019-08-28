@@ -847,7 +847,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Organization?name=MA Bronze Plan PPO&_revinclude=OrganizationAffiliation:primary-organization&_revinclude=PractitionerRole:organization",
+					"raw": "{{url}}/Organization?name=State of Massachusetts Preferred Provider Network&_revinclude=OrganizationAffiliation:primary-organization",
 					"host": [
 						"{{url}}"
 					],
@@ -857,7 +857,7 @@
 					"query": [
 						{
 							"key": "name",
-							"value": "MA Bronze Plan PPO"
+							"value": "State of Massachusetts Preferred Provider Network"
 						},
 						{
 							"key": "_revinclude",
@@ -867,7 +867,8 @@
 						{
 							"key": "_revinclude",
 							"value": "PractitionerRole:organization",
-							"description": "Organization where the role is available"
+							"description": "Organization where the role is available",
+							"disabled": true
 						}
 					]
 				},
@@ -983,114 +984,6 @@
 					]
 				},
 				"description": "Scenario 6: Identify data associated with a Network - A Local Workflow needs available data from a Healthcare Directory concerning a Network, including all services, locations, practitioners, and organizations. \n\nUsing the Network MA Bronze Plan PPO, locate all services, locations, providers and organizations who belong to the network.\nStretch goals: the following networks are on the server:\nMA Bronze Plan PPO\nMA Bronze HSA HMO\nMA Silver 70 PPO\nCT Bronze Plan PPO\nCT Bronze HSA HMO\nCT Silver 70 PPO\nRI Bronze Plan PPO\nRI Bronze HSA HMO\nRI Silver 70 PPO\nFeel free to build a simple network Directories based on the data on the server\n\n**NOTE** **NOTE**:  this is part 2 of a 3 part query"
-			},
-			"response": []
-		},
-		{
-			"name": "Scenario 6c: Identify healthcare services data associated with Network Individual Provider Members",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "b0f639ca-80a4-489a-b085-d952c32c54c1",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"",
-							"// print out the step count to the console",
-							"if (responseCode.code === 200){",
-							"    ",
-							"        try{",
-							"            var dr_data = JSON.parse(responseBody);",
-							"            var data_entry = dr_data.entry;",
-							"            var data_entry_len = data_entry.length;",
-							"            var hcs = [];",
-							"            var loc = [];",
-							"",
-							"",
-							"            for (i = 0; i < data_entry_len; i++){",
-							"                ",
-							"                    var p_name  = data_entry[i].resource.practitioner.display;",
-							"                    ",
-							"                    var locs = (data_entry[i].resource.location) ? data_entry[i].resource.location.length : 0 ;",
-							"                    for (j = 0; j < locs; j++){",
-							"                    loc.push(data_entry[i].resource.location[j].display);",
-							"                    }",
-							"                    ",
-							"                    var hcss = (data_entry[i].resource.healthcareService) ? data_entry[i].resource.healthcareService.length : 0 ;",
-							"                    for (j = 0; j < hcss; j++){",
-							"                    hcs.push(data_entry[i].resource.healthcareService[j].display);",
-							"                    }",
-							"                    if (loc.length != 0){",
-							"                    tests[i+1 + \") Practitioner:\" + p_name  + \"  /Location:\" + loc.toString() + \"  /  HealthcareServices:\" + hcs.toString()] = true;",
-							"                    }",
-							"                    loc = [];",
-							"                    hcs = [];",
-							"",
-							"            }",
-							"            ",
-							"        }",
-							"        ",
-							"        catch(e){",
-							"            console.log(e);",
-							"            }",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"description": "FHIR xml",
-						"key": "Accept",
-						"type": "text",
-						"value": "application/fhir+xml",
-						"disabled": true
-					},
-					{
-						"description": "FHIR xml",
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/fhir+xml",
-						"disabled": true
-					},
-					{
-						"description": "FHIR json",
-						"key": "Accept",
-						"type": "text",
-						"value": "application/fhir+json"
-					},
-					{
-						"description": "FHIR json",
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/fhir+json"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/PractitionerRole?practitioner={{network_pract_members}}&location:missing=false",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"PractitionerRole"
-					],
-					"query": [
-						{
-							"key": "practitioner",
-							"value": "{{network_pract_members}}",
-							"description": "limited list of practitioners from 6a"
-						},
-						{
-							"key": "location:missing",
-							"value": "false",
-							"description": "filters out network member practitionerroles."
-						}
-					]
-				},
-				"description": "Scenario 6: Identify data associated with a Network - A Local Workflow needs available data from a Healthcare Directory concerning a Network, including all services, locations, practitioners, and organizations. \n\nUsing the Network MA Bronze Plan PPO, locate all services, locations, providers and organizations who belong to the network.\nStretch goals: the following networks are on the server:\nMA Bronze Plan PPO\nMA Bronze HSA HMO\nMA Silver 70 PPO\nCT Bronze Plan PPO\nCT Bronze HSA HMO\nCT Silver 70 PPO\nRI Bronze Plan PPO\nRI Bronze HSA HMO\nRI Silver 70 PPO\nFeel free to build a simple network Directories based on the data on the server\n\n**NOTE**:  this is part 3 of a 3 part query  limited to 25 practitiioners due to url size limits"
 			},
 			"response": []
 		}
