@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2d820997-5334-47cd-82de-b10aa9b43b01",
+		"_postman_id": "aa8ff451-d71e-455e-a1ba-bd9f6fb8ae7c",
 		"name": "Payer Directory Connectathon Scenarios",
 		"description": "Sample data load to wildFHIR",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -984,6 +984,56 @@
 					]
 				},
 				"description": "Scenario 6: Identify data associated with a Network - A Local Workflow needs available data from a Healthcare Directory concerning a Network, including all services, locations, practitioners, and organizations. \n\nUsing the Network MA Bronze Plan PPO, locate all services, locations, providers and organizations who belong to the network.\nStretch goals: the following networks are on the server:\nMA Bronze Plan PPO\nMA Bronze HSA HMO\nMA Silver 70 PPO\nCT Bronze Plan PPO\nCT Bronze HSA HMO\nCT Silver 70 PPO\nRI Bronze Plan PPO\nRI Bronze HSA HMO\nRI Silver 70 PPO\nFeel free to build a simple network Directories based on the data on the server\n\n**NOTE** **NOTE**:  this is part 2 of a 3 part query"
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 7a: Identify HealthcareServices in an area",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/HealthcareService?location.address-state=RI",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"HealthcareService"
+					],
+					"query": [
+						{
+							"key": "location.address-state",
+							"value": "RI"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 7b: Identify particular types of HealthcareServices in an area",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/HealthcareService?service-type=respiratory-therapy&location.address-state=RI",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"HealthcareService"
+					],
+					"query": [
+						{
+							"key": "service-type",
+							"value": "respiratory-therapy"
+						},
+						{
+							"key": "location.address-state",
+							"value": "RI"
+						}
+					]
+				}
 			},
 			"response": []
 		}
