@@ -847,7 +847,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Organization?name=State of Massachusetts Preferred Provider Network&_revinclude=OrganizationAffiliation:primary-organization",
+					"raw": "{{url}}/Organization?name=State of Massachusetts Preferred Provider Network&_revinclude=OrganizationAffiliation:network&_revinclude=PractitionerRole:network",
 					"host": [
 						"{{url}}"
 					],
@@ -861,14 +861,13 @@
 						},
 						{
 							"key": "_revinclude",
-							"value": "OrganizationAffiliation:primary-organization",
+							"value": "OrganizationAffiliation:network",
 							"description": "The organization that provides services to the primary organization"
 						},
 						{
 							"key": "_revinclude",
-							"value": "PractitionerRole:organization",
-							"description": "Organization where the role is available",
-							"disabled": true
+							"value": "PractitionerRole:network",
+							"description": "Organization where the role is available"
 						}
 					]
 				},
