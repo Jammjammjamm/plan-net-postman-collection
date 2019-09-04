@@ -1035,6 +1035,60 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Scenario 9a: Identify Organizations in a Network",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/OrganizationAffiliation?network=plannet-network-HPID110000&_include=OrganizationAffiliation:participating-organization",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"OrganizationAffiliation"
+					],
+					"query": [
+						{
+							"key": "network",
+							"value": "plannet-network-HPID110000"
+						},
+						{
+							"key": "_include",
+							"value": "OrganizationAffiliation:participating-organization"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 9b: Identify Practitioners in a Network",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/PractitionerRole?network=plannet-network-HPID110000&_include=PractitionerRole:practitioner",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"PractitionerRole"
+					],
+					"query": [
+						{
+							"key": "network",
+							"value": "plannet-network-HPID110000"
+						},
+						{
+							"key": "_include",
+							"value": "PractitionerRole:practitioner"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
