@@ -258,7 +258,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Practitioner?practitioner-qualification-wherevalid-code=CT",
+					"raw": "{{url}}/Practitioner?qualification-wherevalid-code=CT",
 					"host": [
 						"{{url}}"
 					],
@@ -267,7 +267,7 @@
 					],
 					"query": [
 						{
-							"key": "practitioner-qualification-wherevalid-code",
+							"key": "qualification-wherevalid-code",
 							"value": "CT",
 							"description": "Or any practitioners who have a qualification (e.g. license) where the qualification is valid is in the state of CT (Connecticut)."
 						}
