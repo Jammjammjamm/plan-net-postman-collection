@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Scenario 1: get the practitioner’s qualifications.",
+			"name": "Scenario 1: Request data on a particular Practitioner",
 			"event": [
 				{
 					"listen": "test",
@@ -90,13 +90,12 @@
 							"value": "1236246543"
 						}
 					]
-				},
-				"description": "Scenario 1: Local Data Validation - A Local Workflow Environment needs to verify details on a prior known individual as part of a local use case. \n\nThis scenario tests the ability to send a fully qualified query to the Healthcare Directory to receive data that describes an individual provider. Local Requester will use predetermined NPI numbers to get the practitioner, the practitioners qualifications and any Validation profiles.\n\nUsing a Practitioner’s NPI number 9998367938 get the practitioner’s qualifications.\n"
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Scenario 2: Request all practitioners with any practitioner.address that is in the state of CT (Connecticut).",
+			"name": "Scenario 2a: Request data on Practitioners with an address in Rhode Island",
 			"event": [
 				{
 					"listen": "test",
@@ -176,13 +175,12 @@
 							"value": "RI"
 						}
 					]
-				},
-				"description": "Scenario 2: Request data on a set of practitioners  - A Local Workflow Environment needs the data on a set of practitioners as defined by jurisdictional boundaries, in this case a state.  This might be an initial fetching of information, a bulk update/verification or similar local use case where obtaining information on a state is required.\n\nThis scenario tests the ability to send a qualified query to the Validated Healthcare Directory and receive data on a set of providers. (This example will be obtaining data with addresses in a particular state jurisdiction.) \n\nProfiles Utilized: Practitioner, PractitionerRole, Location"
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Scenario 2: any practitioners who have a qualification in CT",
+			"name": "Scenario 2b: Request data on any Practitioners who have a qualification in CT",
 			"event": [
 				{
 					"listen": "test",
@@ -272,13 +270,12 @@
 							"description": "Or any practitioners who have a qualification (e.g. license) where the qualification is valid is in the state of CT (Connecticut)."
 						}
 					]
-				},
-				"description": "Scenario 2: Request data on a set of practitioners  - A Local Workflow Environment needs the data on a set of practitioners as defined by jurisdictional boundaries, in this case a state.  This might be an initial fetching of information, a bulk update/verification or similar local use case where obtaining information on a state is required. \n\nThis scenario tests the ability to send a qualified query to the Validated Healthcare Directory and receive data on a set of providers. (This example will be obtaining data with addresses in a particular state jurisdiction.) \n \nany practitioners who have a qualification (e.g. license) where the qualification is valid is in the state of CT (Connecticut).\n\n**NOTE**: not yet supported on Brian's server"
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Scenario 3: query the locations and services for GREATER LAWRENCE FAMILY HEALTH CENTER, INC.",
+			"name": "Scenario 3: Request data on an individual Organization",
 			"event": [
 				{
 					"listen": "test",
@@ -380,13 +377,12 @@
 							"value": "Endpoint:organization"
 						}
 					]
-				},
-				"description": "Scenario 3: Request data on an individual  organization - A Local Workflow Environment needs current data on an individual organization including all locations, and services. \n\nThis scenario tests the ability of a Local Requester to query the Healthcare Directory and receive organizational information including locations and services provided by the organization.  Local Requester will use a specific organization to receive the locations of the organization and specialty areas by location.\n\nUsing the organization GREATER LAWRENCE FAMILY HEALTH CENTER, INC., query the locations and services for that organization. \n\nThe requester will be querying on a specific organization to determine details which identify location and services of that organization."
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Scenario 4a: Query for related organizations for BAY STATE COMMUNITY SERVICES, INC",
+			"name": "Scenario 4: Request data on Organizations",
 			"event": [
 				{
 					"listen": "test",
@@ -495,23 +491,16 @@
 							"value": "Endpoint:organization"
 						},
 						{
-							"key": "",
-							"value": "",
-							"description": "Organization where the role is available",
-							"disabled": true
-						},
-						{
 							"key": "_revinclude",
 							"value": "HealthcareService:organization"
 						}
 					]
-				},
-				"description": "Scenario 4: Request Data on Organizations - A Local Workflow Environment needs current data on an individual organization’s affiliations; including all locations and the services delivered at those locations. \n\nThis scenario tests the ability of a Local Requester to query the Healthcare Directory and receive organizational information including affiliations with other organizations.   Local Requester will use a specific organization to receive the locations of the organization and specialty areas by location.\n\nUsing the organization BAY STATE COMMUNITY SERVICES, INC. query the Healthcare Directory to receive related organizations and HealthcareServices provided for each organization.\n\nThis scenario will get the Direct email addresses of any entity returned.\n\n**NOTE**:  this is part 1 of a 3 part query"
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Scenario 5a: Request Organization data for a specific Provider -",
+			"name": "Scenario 5a: Request Organization data for a specific Provider",
 			"event": [
 				{
 					"listen": "test",
@@ -632,13 +621,12 @@
 							"value": "PractitionerRole:organization"
 						}
 					]
-				},
-				"description": "Scenario 5: Request Organization data for a specific Provider - A Local Workflow environment needs updated information for a specific provider and all organizations the provider is affiliated with.\n\nThis scenario tests the ability for a Local Requester to query by a given provider to find all associated organizations, locations, networks and practice specialty, including a Direct address if available. \n\nGiven the NPI 9994024518, query for the associated provider, the organizations he/she is affiliated with, all locations and services and the networks he subscribes to. \nDetermine the existence of a Direct \n\n**NOTE** Part 1 of 2 part query"
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Scenario 5b: Query for related organizations for BAY STATE COMMUNITY SERVICES, INC",
+			"name": "Scenario 5b: Request Locations, HealthcareServices, and Endpoints for Provider Organization",
 			"event": [
 				{
 					"listen": "test",
@@ -724,7 +712,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Organization?_id={{pract_assoc_orgs}}&_revinclude=Location:organization&_revinclude=HealthcareService:organization",
+					"raw": "{{url}}/Organization?_id={{pract_assoc_orgs}}&_revinclude=Location:organization&_revinclude=HealthcareService:organization&_revinclude=Endpoint:organization",
 					"host": [
 						"{{url}}"
 					],
@@ -743,10 +731,13 @@
 						{
 							"key": "_revinclude",
 							"value": "HealthcareService:organization"
+						},
+						{
+							"key": "_revinclude",
+							"value": "Endpoint:organization"
 						}
 					]
-				},
-				"description": "Scenario 4: Request Data on Organizations - A Local Workflow Environment needs current data on an individual organization’s affiliations; including all locations and the services delivered at those locations. \n\nThis scenario tests the ability of a Local Requester to query the Healthcare Directory and receive organizational information including affiliations with other organizations.   Local Requester will use a specific organization to receive the locations of the organization and specialty areas by location.\n\nUsing the organization BAY STATE COMMUNITY SERVICES, INC. query the Healthcare Directory to receive related organizations and HealthcareServices provided for each organization.\n\nThis scenario will get the Direct email addresses of any entity returned.\n\n**NOTE**:  this is part 2 of a 2 part query"
+				}
 			},
 			"response": []
 		},
@@ -874,8 +865,7 @@
 							"description": "Organization where the role is available"
 						}
 					]
-				},
-				"description": "Scenario 6: Identify data associated with a Network - A Local Workflow needs available data from a Healthcare Directory concerning a Network, including all services, locations, practitioners, and organizations. \n\nUsing the Network MA Bronze Plan PPO, locate all services, locations, providers and organizations who belong to the network.\nStretch goals: the following networks are on the server:\nMA Bronze Plan PPO\nMA Bronze HSA HMO\nMA Silver 70 PPO\nCT Bronze Plan PPO\nCT Bronze HSA HMO\nCT Silver 70 PPO\nRI Bronze Plan PPO\nRI Bronze HSA HMO\nRI Silver 70 PPO\nFeel free to build a simple network Directories based on the data on the server\n\n**NOTE**:  **NOTE**:  this is part 1 of a 3 part query"
+				}
 			},
 			"response": []
 		},
@@ -985,8 +975,7 @@
 							"value": "HealthcareService:organization"
 						}
 					]
-				},
-				"description": "Scenario 6: Identify data associated with a Network - A Local Workflow needs available data from a Healthcare Directory concerning a Network, including all services, locations, practitioners, and organizations. \n\nUsing the Network MA Bronze Plan PPO, locate all services, locations, providers and organizations who belong to the network.\nStretch goals: the following networks are on the server:\nMA Bronze Plan PPO\nMA Bronze HSA HMO\nMA Silver 70 PPO\nCT Bronze Plan PPO\nCT Bronze HSA HMO\nCT Silver 70 PPO\nRI Bronze Plan PPO\nRI Bronze HSA HMO\nRI Silver 70 PPO\nFeel free to build a simple network Directories based on the data on the server\n\n**NOTE** **NOTE**:  this is part 2 of a 3 part query"
+				}
 			},
 			"response": []
 		},
@@ -996,7 +985,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/HealthcareService?location.address-state=RI",
+					"raw": "{{url}}/HealthcareService?location.address-state=RI&_include=HealthcareService:organization",
 					"host": [
 						"{{url}}"
 					],
@@ -1007,6 +996,10 @@
 						{
 							"key": "location.address-state",
 							"value": "RI"
+						},
+						{
+							"key": "_include",
+							"value": "HealthcareService:organization"
 						}
 					]
 				}
@@ -1019,12 +1012,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/HealthcareService?service-type=respiratory-therapy&location.address-state=RI",
+					"raw": "{{url}}/Organization?service-type=respiratory-therapy&location.address-state=RI",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"HealthcareService"
+						"Organization"
 					],
 					"query": [
 						{
@@ -1046,21 +1039,17 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/HealthcareService?service-type=respiratory-therapy&location.address-state=RI",
+					"raw": "{{url}}/Practitioner?qualification-period=eb2019-12-14",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"HealthcareService"
+						"Practitioner"
 					],
 					"query": [
 						{
-							"key": "service-type",
-							"value": "respiratory-therapy"
-						},
-						{
-							"key": "location.address-state",
-							"value": "RI"
+							"key": "qualification-period",
+							"value": "eb2019-12-14"
 						}
 					]
 				}
