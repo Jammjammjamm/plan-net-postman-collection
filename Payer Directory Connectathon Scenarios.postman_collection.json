@@ -980,7 +980,7 @@
 			"response": []
 		},
 		{
-			"name": "Scenario 7a: Identify HealthcareServices in an area",
+			"name": "Scenario 7a: Identify HealthcareServices in a state",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -1007,17 +1007,48 @@
 			"response": []
 		},
 		{
-			"name": "Scenario 7b: Identify particular types of HealthcareServices in an area",
+			"name": "Scenario 7b: Identify HealthcareServices in a city",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/Organization?service-type=respiratory-therapy&location.address-state=RI",
+					"raw": "{{url}}/HealthcareService?location.address-state=RI&location.address-city=Providence&_include=HealthcareService:organization",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"Organization"
+						"HealthcareService"
+					],
+					"query": [
+						{
+							"key": "location.address-state",
+							"value": "RI"
+						},
+						{
+							"key": "location.address-city",
+							"value": "Providence"
+						},
+						{
+							"key": "_include",
+							"value": "HealthcareService:organization"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 7c: Identify particular types of HealthcareServices in a state",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/HealthcareService?service-type=respiratory-therapy&location.address-state=RI&_include=HealthcareService:organization",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"HealthcareService"
 					],
 					"query": [
 						{
@@ -1027,6 +1058,37 @@
 						{
 							"key": "location.address-state",
 							"value": "RI"
+						},
+						{
+							"key": "_include",
+							"value": "HealthcareService:organization"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 7d: Identify particular types of HealthcareServices in an area",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/HealthcareService?service-type=respiratory-therapy&location.near=-71.4|41.8|100|mi_us",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"HealthcareService"
+					],
+					"query": [
+						{
+							"key": "service-type",
+							"value": "respiratory-therapy"
+						},
+						{
+							"key": "location.near",
+							"value": "-71.4|41.8|100|mi_us"
 						}
 					]
 				}
