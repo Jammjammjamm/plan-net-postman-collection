@@ -355,7 +355,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/Organization?name=GREATER LAWRENCE FAMILY HEALTH CENTER, INC.&_revinclude=Location:organization&_revinclude=HealthcareService:organization",
+					"raw": "{{url}}/Organization?name=GREATER LAWRENCE FAMILY HEALTH CENTER, INC.&_revinclude=Location:organization&_revinclude=HealthcareService:organization&_revinclude=Endpoint:organization",
 					"host": [
 						"{{url}}"
 					],
@@ -374,6 +374,10 @@
 						{
 							"key": "_revinclude",
 							"value": "HealthcareService:organization"
+						},
+						{
+							"key": "_revinclude",
+							"value": "Endpoint:organization"
 						}
 					]
 				},
@@ -1011,6 +1015,33 @@
 		},
 		{
 			"name": "Scenario 7b: Identify particular types of HealthcareServices in an area",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/HealthcareService?service-type=respiratory-therapy&location.address-state=RI",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"HealthcareService"
+					],
+					"query": [
+						{
+							"key": "service-type",
+							"value": "respiratory-therapy"
+						},
+						{
+							"key": "location.address-state",
+							"value": "RI"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Scenario 8: Find Practitioners whose license will expire in the next 90 days",
 			"request": {
 				"method": "GET",
 				"header": [],
